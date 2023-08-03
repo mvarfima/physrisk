@@ -22,8 +22,11 @@ class ZarrReader:
     """Reads hazard event data from Zarr files, including OSC-format-specific attributes."""
 
     # environment variable names:
-    __access_key = "OSC_S3_ACCESS_KEY"
-    __secret_key = "OSC_S3_SECRET_KEY"
+    __access_key = "OSC_S3_HIdev01_ACCESS_KEY"
+    __secret_key = "OSC_S3_HIdev01_SECRET_KEY" 
+
+    # __access_key = "OSC_S3_ACCESS_KEY" # OSC_S3_HIdev01_ACCESS_KEY
+    # __secret_key = "OSC_S3_SECRET_KEY" # OSC_S3_HIdev01_SECRET_KEY
     __S3_bucket = "OSC_S3_BUCKET"  # e.g. redhat-osc-physical-landing-647521352890 on staging
     __zarr_path = "OSC_S3_HAZARD_PATH"  # e.g. hazard/hazard.zarr on staging
 
@@ -60,8 +63,11 @@ class ZarrReader:
     def create_s3_zarr_store(cls, get_env: Callable[[str, Optional[str]], str] = get_env):
         access_key = get_env(cls.__access_key, None)
         secret_key = get_env(cls.__secret_key, None)
-        s3_bucket = get_env(cls.__S3_bucket, "redhat-osc-physical-landing-647521352890")
-        zarr_path = get_env(cls.__zarr_path, "hazard/hazard.zarr")
+        # s3_bucket = get_env(cls.__S3_bucket, "redhat-osc-physical-landing-647521352890")
+        # zarr_path = get_env(cls.__zarr_path, "hazard/hazard.zarr")
+
+        s3_bucket = get_env(cls.__S3_bucket, "physrisk-hazard-indicators-dev01")
+        zarr_path = get_env(cls.__zarr_path, "hazard/riverflood_JRC_RP_hist.zarr")
 
         s3 = s3fs.S3FileSystem(anon=False, key=access_key, secret=secret_key)
 
@@ -101,7 +107,12 @@ class ZarrReader:
         if index_values is None:
             index_values = [0]
 
-        image_coords = self._get_coordinates(longitudes, latitudes, transform)
+        import pyproj
+        proj = pyproj.Transformer.from_crs(4326, 3035, always_xy=True, authority='EPSG')
+        xs, ys = proj.transform(np.array(longitudes),  np.array(latitudes))
+
+        # image_coords = self._get_coordinates(longitudes, latitudes, transform)
+        image_coords = self._get_coordinates(xs, ys, transform)
 
         if interpolation == "floor":
             image_coords = np.floor(image_coords).astype(int)

@@ -73,7 +73,9 @@ class ZarrHazardModel(PregeneratedHazardModel):
             source_paths = calculation.get_default_zarr_source_paths()
 
         # share ZarrReaders across HazardDataProviders
-        zarr_reader = ZarrReader(store=store) if reader is None else reader
+        # zarr_reader = ZarrReader(store=store) if reader is None else reader
+
+        zarr_reader = ZarrReader(store=store)
 
         super().__init__(
             dict(

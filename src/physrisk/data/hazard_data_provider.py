@@ -114,10 +114,13 @@ class ChronicHazardDataProvider(HazardDataProvider):
 
 
 # region World Resource Aqueduct Model
-
+# def _wri_inundation_prefix():
+#     return "inundation/wri/v2"
 
 def _wri_inundation_prefix():
-    return "inundation/wri/v2"
+    default_staging_bucket = 'physrisk-hazard-indicators-dev01'
+    prefix = 'hazard'
+    return os.path.join(default_staging_bucket, prefix, "riverflood_JRC_RP_hist.zarr").replace('\\','/')
 
 
 _percentiles_map = {"95": "0", "5": "0_perc_05", "50": "0_perc_50"}
@@ -139,8 +142,11 @@ def get_source_path_wri_coastal_inundation(*, model: str, scenario: str, year: i
 
 
 def get_source_path_wri_riverine_inundation(*, model: str, scenario: str, year: int):
-    type = "river"
-    return os.path.join(_wri_inundation_prefix(), f"inun{type}_{cmip6_scenario_to_rcp(scenario)}_{model}_{year}")
+    return os.path.join(_wri_inundation_prefix(), 'prueba')
+
+# def get_source_path_wri_riverine_inundation(*, model: str, scenario: str, year: int):
+#     type = "river"
+#     return os.path.join(_wri_inundation_prefix(), f"inun{type}_{cmip6_scenario_to_rcp(scenario)}_{model}_{year}")
 
 
 def cmip6_scenario_to_rcp(scenario: str):

@@ -48,11 +48,17 @@ class AssetImpactResult:
         self.event = event
 
 
+# def get_default_zarr_source_paths():
+#     return {
+#         RiverineInundation: get_source_path_wri_riverine_inundation,
+#         CoastalInundation: get_source_path_wri_coastal_inundation,
+#         ChronicHeat: get_source_path_osc_chronic_heat,
+#     }
+
+
 def get_default_zarr_source_paths():
     return {
-        RiverineInundation: get_source_path_wri_riverine_inundation,
-        CoastalInundation: get_source_path_wri_coastal_inundation,
-        ChronicHeat: get_source_path_osc_chronic_heat,
+        RiverineInundation: get_source_path_wri_riverine_inundation
     }
 
 
