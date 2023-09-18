@@ -20,11 +20,11 @@ from ..kernel.vulnerability_model import (
 
 
 if "physical_risk_database" in os.environ:
-    base_path_damfun = os.path.join(os.getenv("physical_risk_database"), 'damage_funs')
+    base_path_damfun = os.path.join(os.getenv("physical_risk_database"), 'vulnerability', 'damage_functions')
 else:
     base_path = os.getcwd()
     base_path = base_path.split('PhysicalRisk')[0]
-    base_path_damfun = os.path.join(base_path, 'physical_risk_database', 'damage_funs')
+    base_path_damfun = os.path.join(base_path, 'physical_risk_database', 'vulnerability', 'damage_functions')
 
 
 @applies_to_events([RiverineInundation])

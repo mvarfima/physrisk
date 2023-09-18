@@ -67,7 +67,7 @@ class ZarrReader:
         # zarr_path = get_env(cls.__zarr_path, "hazard/hazard.zarr")
 
         s3_bucket = get_env(cls.__S3_bucket, "physrisk-hazard-indicators-dev01")
-        zarr_path = get_env(cls.__zarr_path, "hazard/riverflood_JRC_RP_hist.zarr")
+        zarr_path = get_env(cls.__zarr_path, "hazard/hazard.zarr")
 
         s3 = s3fs.S3FileSystem(anon=False, key=access_key, secret=secret_key)
 
