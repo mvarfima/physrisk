@@ -6,10 +6,10 @@ import s3fs
 from fsspec import AbstractFileSystem
 from pydantic import BaseModel, TypeAdapter
 
+
 from physrisk.api.v1.hazard_data import HazardResource
 
 from .zarr_reader import get_env
-
 
 class HazardModels(BaseModel):
     resources: List[HazardResource]

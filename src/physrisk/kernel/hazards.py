@@ -51,7 +51,7 @@ class Drought(Hazard):
 
 
 class Fire(Hazard):
-    kind = HazardKind.chronic
+    kind = HazardKind.acute
     pass
 
 
@@ -69,6 +69,17 @@ class RiverineInundation(Inundation):
     kind = HazardKind.acute
     pass
 
+class Landslide(Hazard):
+    kind = HazardKind.acute
+    pass
+
+class WaterStress(Hazard):
+    kind = HazardKind.acute
+    pass
+
+class Subsidence(Hazard):
+    kind = HazardKind.acute
+    pass
 
 class Wind(Hazard):
     kind = HazardKind.acute

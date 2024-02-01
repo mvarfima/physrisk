@@ -4,7 +4,7 @@ from physrisk.api.v1.hazard_data import HazardResource
 from physrisk.data.hazard_data_provider import HazardDataHint, SourcePath
 from physrisk.data.inventory import EmbeddedInventory, Inventory
 from physrisk.kernel import hazards
-from physrisk.kernel.hazards import ChronicHeat, CoastalInundation, RiverineInundation, Wind
+from physrisk.kernel.hazards import ChronicHeat, CoastalInundation, RiverineInundation, Wind, Fire, WaterStress
 
 
 class ResourceSubset:
@@ -79,27 +79,14 @@ class InventorySourcePaths:
                 self._no_selector,
             )
             resources = self._inventory.resources_by_type_id[(hazard_type, indicator_id)]
-            if len(resources) == 0:
-                raise RuntimeError(
-                    f"unable to find any resources for hazard {hazard_type} " f"and indicator ID {indicator_id}"
-                )
             candidates = ResourceSubset(resources)
-            try:
-                if hint is not None:
-                    resource = candidates.match(hint)
-                else:
-                    resource = selector(candidates=candidates, scenario=scenario, year=year, hint=hint)
-            except Exception:
-                raise RuntimeError(
-                    f"unable to select unique resource for hazard {hazard_type} " f"and indicator ID {indicator_id}"
-                )
+            if hint is not None:
+                resource = candidates.match(hint)
+            else:
+                resource = selector(candidates=candidates, scenario=scenario, year=year, hint=hint)
             proxy_scenario = cmip6_scenario_to_rcp(scenario) if resource.scenarios[0].id.startswith("rcp") else scenario
             if scenario == "historical":
-                scenarios = next(iter(s for s in resource.scenarios if s.id == "historical"), None)
-                if scenarios is None:
-                    scenarios = next(s for s in sorted(resource.scenarios, key=lambda s: next(y for y in s.years)))
-                proxy_scenario = scenarios.id
-                year = next(s for s in scenarios.years)
+                year = next(y for y in next(s for s in resource.scenarios if s.id == "historical").years)
             return resource.path.format(id=indicator_id, scenario=proxy_scenario, year=year)
 
         return _get_source_path
@@ -117,7 +104,8 @@ class CoreInventorySourcePaths(InventorySourcePaths):
         self.add_selector(ChronicHeat, "mean/degree/days/above/32c", self._select_chronic_heat)
         self.add_selector(RiverineInundation, "flood_depth", self._select_riverine_inundation)
         self.add_selector(CoastalInundation, "flood_depth", self._select_coastal_inundation)
-        self.add_selector(Wind, "max_speed", self._select_wind)
+        self.add_selector(WaterStress, "water_stress", self._select_waterstress)
+        self.add_selector(Fire, "fwi20", self._select_fire)
 
     def resources_with(self, *, hazard_type: type, indicator_id: str):
         return ResourceSubset(self._inventory.resources_by_type_id[(hazard_type.__name__, indicator_id)])
@@ -133,9 +121,9 @@ class CoreInventorySourcePaths(InventorySourcePaths):
         candidates: ResourceSubset, scenario: str, year: int, hint: Optional[HazardDataHint] = None
     ):
         return (
-            candidates.with_model_id("nosub").first()
+            candidates.with_group_id("coastal_tudelft").first()
             if scenario == "historical"
-            else candidates.with_model_id("wtsub/95").first()
+            else candidates.with_group_id("coastal_tudelft").first()
         )
 
     @staticmethod
@@ -145,12 +133,24 @@ class CoreInventorySourcePaths(InventorySourcePaths):
         return (
             candidates.with_model_gcm("historical").first()
             if scenario == "historical"
-            else candidates.with_model_gcm("MIROC-ESM-CHEM").first()
+            else candidates.with_model_gcm("historical").first()
         )
 
     @staticmethod
-    def _select_wind(candidates: ResourceSubset, scenario: str, year: int, hint: Optional[HazardDataHint] = None):
-        return candidates.prefer_group_id("iris_osc").first()
+    def _select_waterstress(candidates: ResourceSubset, scenario: str, year: int, hint: Optional[HazardDataHint] = None):
+        return (
+            candidates.with_group_id("wri").first()
+            if scenario == "historical"
+            else candidates.with_group_id("wri").first()
+        )
+    
+    @staticmethod
+    def _select_fire(candidates: ResourceSubset, scenario: str, year: int, hint: Optional[HazardDataHint] = None):
+        return (
+            candidates.with_group_id("ecb_fwi").first()
+            if scenario == "historical"
+            else candidates.with_group_id("ecb_fwi").first()
+        )
 
 
 def cmip6_scenario_to_rcp(scenario: str):
@@ -169,7 +169,7 @@ def cmip6_scenario_to_rcp(scenario: str):
     elif scenario == "ssp585":
         return "rcp8p5"
     else:
-        if scenario not in ["rcp2p6", "rcp4p5", "rcp6p0", "rcp8p5", "historical"]:
+        if scenario not in ["rcp2p6", "rcp4p5", "rcp8p5", "historical", "rcp26", "rcp45", "rcp85"]:
             raise ValueError(f"unexpected scenario {scenario}")
         return scenario
 

@@ -63,6 +63,11 @@ def calculate_impacts(  # noqa: C901
         for asset in assets:
             requests = asset_requests[(model, asset)]
             hazard_data = [responses[req] for req in get_iterable(requests)]
+
+
+            if requests[0].indicator_id == 'fwi20' and not any(isinstance(hd, HazardDataFailedResponse) for hd in hazard_data):
+                print('bingo')
+
             if any(isinstance(hd, HazardDataFailedResponse) for hd in hazard_data):
                 assert isinstance(model, VulnerabilityModelBase)
                 results[ImpactKey(asset=asset, hazard_type=model.hazard_type)] = AssetImpactResult(EmptyImpactDistrib())

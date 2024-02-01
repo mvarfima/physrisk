@@ -1,7 +1,7 @@
 import importlib
 import json
 from importlib import import_module
-from pathlib import PosixPath
+from pathlib import WindowsPath
 from typing import Any, Dict, List, Optional, Sequence, Type, cast
 
 import numpy as np
@@ -103,10 +103,10 @@ class Requester:
         if not _read_permitted(request.group_ids, inventory.resources[request.resource]):
             raise PermissionError()
         model = inventory.resources[request.resource]
-        len(PosixPath(model.map.path).parts)
+        len(WindowsPath(model.map.path).parts)
         path = (
-            str(PosixPath(model.path).with_name(model.map.path))
-            if len(PosixPath(model.map.path).parts) == 1
+            str(WindowsPath(model.path).with_name(model.map.path))
+            if len(WindowsPath(model.map.path).parts) == 1
             else model.map.path
         ).format(scenario=request.scenario_id, year=request.year)
         colormap = request.colormap if request.colormap is not None else model.map.colormap.name
@@ -276,6 +276,86 @@ def _get_asset_impacts(
     vulnerability_models = (
         calc.get_default_vulnerability_models() if vulnerability_models is None else vulnerability_models
     )
+
+    print('-*'*60)
+    print(request)
+    print('-*'*60)
+
+
+    # we keep API definition of asset separate from internal Asset class; convert by reflection
+    # based on asset_class:
+    assets = create_assets(request.assets)
+    measure_calcs = calc.get_default_risk_measure_calculators()
+    risk_model = AssetLevelRiskModel(hazard_model, vulnerability_models, measure_calcs)
+
+    scenarios = [request.scenario] if request.scenarios is None or len(request.scenarios) == 0 else request.scenarios
+    years = [request.year] if request.years is None or len(request.years) == 0 else request.years
+    risk_measures = None
+    if request.include_measures:
+        impacts, measures = risk_model.calculate_risk_measures(assets, scenarios, years)
+        measure_ids_for_asset, definitions = risk_model.populate_measure_definitions(assets)
+        # create object for API:
+        risk_measures = _create_risk_measures(measures, measure_ids_for_asset, definitions, assets, scenarios, years)
+    elif request.include_asset_level:
+        impacts = risk_model.calculate_impacts(assets, scenarios, years)
+
+    if request.include_asset_level:
+        ordered_impacts: Dict[Asset, List[AssetSingleImpact]] = {}
+        for k, v in impacts.items():
+            if request.include_calc_details:
+                if v.event is not None and v.vulnerability is not None:
+                    hazard_exceedance = v.event.to_exceedance_curve()
+
+                    vulnerability_distribution = VulnerabilityDistrib(
+                        intensity_bin_edges=v.vulnerability.intensity_bins,
+                        impact_bin_edges=v.vulnerability.impact_bins,
+                        prob_matrix=v.vulnerability.prob_matrix,
+                    )
+                    calc_details = AcuteHazardCalculationDetails(
+                        hazard_exceedance=ExceedanceCurve(
+                            values=hazard_exceedance.values, exceed_probabilities=hazard_exceedance.probs
+                        ),
+                        hazard_distribution=Distribution(
+                            bin_edges=v.event.intensity_bin_edges, probabilities=v.event.prob
+                        ),
+                        vulnerability_distribution=vulnerability_distribution,
+                    )
+            else:
+                calc_details = None
+
+            if isinstance(v.impact, EmptyImpactDistrib):
+                continue
+            impact_exceedance = v.impact.to_exceedance_curve()
+            key = ImpactKey(hazard_type=k.hazard_type.__name__, scenario_id=k.scenario, year=str(k.key_year))
+            hazard_impacts = AssetSingleImpact(
+                key=key,
+                impact_type=v.impact.impact_type.name,
+                impact_exceedance=ExceedanceCurve(
+                    values=impact_exceedance.values, exceed_probabilities=impact_exceedance.probs
+                ),
+                impact_distribution=Distribution(bin_edges=v.impact.impact_bins, probabilities=v.impact.prob),
+                impact_mean=v.impact.mean_impact(),
+                impact_std_deviation=v.impact.stddev_impact(),
+                calc_details=None if v.event is None else calc_details,
+            )
+            ordered_impacts.setdefault(k.asset, []).append(hazard_impacts)
+
+        # note that this does rely on ordering of dictionary (post 3.6)
+        asset_impacts = [AssetLevelImpact(asset_id="", impacts=a) for a in ordered_impacts.values()]
+    else:
+        asset_impacts = None
+
+    return AssetImpactResponse(asset_impacts=asset_impacts, risk_measures=risk_measures)
+
+
+def _get_asset_impacts_working(
+    request: AssetImpactRequest,
+    hazard_model: HazardModel,
+    vulnerability_models: Optional[Dict[Type[Asset], Sequence[VulnerabilityModelBase]]] = None,
+):
+    vulnerability_models = (
+        calc.get_default_vulnerability_models() if vulnerability_models is None else vulnerability_models
+    )
     # we keep API definition of asset separate from internal Asset class; convert by reflection
     # based on asset_class:
     assets = create_assets(request.assets)
@@ -366,10 +446,19 @@ def _create_risk_measures(
         RiskMeasures: Output for writing to JSON.
     """
     nan_value = -9999.0  # Nan not part of JSON spec
-    hazard_types = all_hazards()
+    # hazard_types = all_hazards()
     measure_set_id = "measure_set_0"
     measures_for_assets: List[RiskMeasuresForAssets] = []
-    for hazard_type in hazard_types:
+
+    hazard_types = [physrisk.kernel.hazards.CoastalInundation, 
+                    physrisk.kernel.hazards.RiverineInundation,
+                    physrisk.kernel.hazards.Wind,
+                    physrisk.kernel.hazards.Fire,
+                    physrisk.kernel.hazards.WaterStress,
+                    physrisk.kernel.hazards.Landslide,
+                    physrisk.kernel.hazards.Subsidence]
+
+    for hazard_type in hazard_types: 
         for scenario_id in scenarios:
             for year in years:
                 # we calculate and tag results for each scenario, year and hazard

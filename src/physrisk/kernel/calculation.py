@@ -3,7 +3,7 @@ from typing import Dict, Sequence
 from physrisk.data.pregenerated_hazard_model import ZarrHazardModel
 from physrisk.hazard_models.core_hazards import get_default_source_paths
 from physrisk.kernel.risk import RiskMeasureCalculator
-from physrisk.risk_models.risk_models import RealEstateToyRiskMeasures
+from physrisk.risk_models.risk_models import RealEstateToyRiskMeasures, PowerGeneratingAssetToyRiskMeasures
 from physrisk.vulnerability_models import power_generating_asset_models as pgam
 from physrisk.vulnerability_models.chronic_heat_models import ChronicHeatGZNModel
 from physrisk.vulnerability_models.real_estate_models import (
@@ -32,7 +32,10 @@ def get_default_hazard_model() -> HazardModel:
 def get_default_vulnerability_models() -> Dict[type, Sequence[VulnerabilityModelBase]]:
     """Get default exposure/vulnerability models for different asset types."""
     return {
-        PowerGeneratingAsset: [pgam.InundationModel()],
+        PowerGeneratingAsset: [pgam.RiverInundationModel(),
+                               pgam.CoastalInundationModel(),
+                               pgam.WildFireVulModel(),
+                               pgam.WaterStressVulModel()],
         RealEstateAsset: [
             RealEstateCoastalInundationModel(),
             RealEstateRiverineInundationModel(),
@@ -52,4 +55,5 @@ def get_default_vulnerability_models() -> Dict[type, Sequence[VulnerabilityModel
 
 def get_default_risk_measure_calculators() -> Dict[type, RiskMeasureCalculator]:
     """For asset-level risk measure, define the measure calculators to use."""
-    return {RealEstateAsset: RealEstateToyRiskMeasures()}
+    return {RealEstateAsset: RealEstateToyRiskMeasures(),
+            PowerGeneratingAsset: PowerGeneratingAssetToyRiskMeasures()}

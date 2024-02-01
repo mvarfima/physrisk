@@ -10,6 +10,8 @@ from physrisk.kernel.impact import AssetImpactResult, ImpactKey, calculate_impac
 from physrisk.kernel.impact_distrib import EmptyImpactDistrib, ImpactDistrib
 from physrisk.kernel.vulnerability_model import VulnerabilityModelBase
 
+from physrisk.kernel.hazards import WaterStress
+
 # from asyncio import ALL_COMPLETED
 # import concurrent.futures
 
@@ -165,12 +167,23 @@ class AssetLevelRiskModel(RiskModel):
             for prosp_scen in prosp_scens:
                 for year in years:
                     for hazard_type in measure_calc.supported_hazards():
-                        base_impact = impacts.get(
-                            ImpactKey(asset=asset, hazard_type=hazard_type, scenario="historical", key_year=None)
-                        ).impact
-                        prosp_impact = impacts.get(
-                            ImpactKey(asset=asset, hazard_type=hazard_type, scenario=prosp_scen, key_year=year)
-                        ).impact
+                        try:
+                            if hazard_type == WaterStress:
+                                base_impact = impacts.get(
+                                    ImpactKey(asset=asset, hazard_type=hazard_type, scenario="rcp26", key_year=2020)
+                                ).impact
+                            else:
+                                base_impact = impacts.get(
+                                ImpactKey(asset=asset, hazard_type=hazard_type, scenario="historical", key_year=None)
+                            ).impact
+                        except:
+                            base_impact = EmptyImpactDistrib()
+                        try:
+                            prosp_impact = impacts.get(
+                                ImpactKey(asset=asset, hazard_type=hazard_type, scenario=prosp_scen, key_year=year)
+                            ).impact
+                        except:
+                            prosp_impact = EmptyImpactDistrib()
                         if not isinstance(base_impact, EmptyImpactDistrib) and not isinstance(
                             prosp_impact, EmptyImpactDistrib
                         ):
