@@ -1,0 +1,622 @@
+{
+    "resources": [
+        {
+            "hazard_type": "RiverineInundation",
+            "group_id": "river_jrc",
+            "path": "inundation_river/jrc/v2/flood_depth_{scenario}_{year}",
+            "indicator_id": "flood_depth",
+            "indicator_model_id": null,
+            "indicator_model_gcm": "historical",
+            "params": {},
+            "display_name": "River Flood Depth (JRC)",
+            "display_groups": [],
+            "description": "\n                The maps depict flood prone areas for river flood events for six different flood \n                frequencies (from 1-in-10-years to 1-in-500-years). The extent comprises most \n                of the geographical Europe and all the river basins entering the Mediterranean \n                and Black Seas in the Caucasus, Middle East and Northern Africa countries. \n                Cell values indicate water depth (in m).\n                ",
+            "map": {
+                "colormap": {
+                    "min_index": 1,
+                    "min_value": 0.0,
+                    "max_index": 255,
+                    "max_value": 5.0,
+                    "name": "flare",
+                    "nodata_index": 0,
+                    "units": "meters"
+                },
+                "path": "flood_depth_{scenario}_{year}_map",
+                "bounds": [
+                    [
+                        -180.0,
+                        85.0
+                    ],
+                    [
+                        180.0,
+                        85.0
+                    ],
+                    [
+                        180.0,
+                        -85.0
+                    ],
+                    [
+                        -180.0,
+                        -85.0
+                    ]
+                ],
+                "index_values": null,
+                "source": "map_array_pyramid"
+            },
+            "scenarios": [
+                {
+                    "id": "historical",
+                    "years": [
+                        1990
+                    ]
+                }
+            ],
+            "units": "none"
+        },
+        {
+            "hazard_type": "CoastalInundation",
+            "group_id": "coastal_jrc",
+            "path": "inundation_coastal/jrc/v1/strom_surge_level_{scenario}_{year}",
+            "indicator_id": "storm_surge_level",
+            "indicator_model_id": null,
+            "indicator_model_gcm": "historical",
+            "params": {},
+            "display_name": "Coastal Storm Surge Level (JRC)",
+            "display_groups": [],
+            "description": "\n                The dataset contains the extreme storm surge levels (ESSL) at a European scale. The ESSL\n                are estimated from an ensemble of 8 climatic models for the period from 1/12/1969 to \n                30/11/2004 and for 8 return periods (5, 10, 20, 50, 100, 200, 500, 1000) according to \n                the Peak Over Threshold approach.\n\n                The dataset contains the extreme storm surge levels (ESSL) at a European scale. \n                The ESSL are estimated from an ensemble of 8 climatic models and the corresponding \n                RCP45 scenarios, for the period from 1/12/2009 to 30/11/2099 and for 8 return periods\n                (5, 10, 20, 50, 100, 200, 500, 1000) according to the Peak Over Threshold approach.\n\n                The dataset contains the extreme storm surge levels (ESSL) at a European scale. \n                The ESSL are estimated from an ensemble of 8 climatic models and the corresponding \n                RCP85 scenarios, for the period from 1/12/2009 to 30/11/2099 and for 8 return periods\n                (5, 10, 20, 50, 100, 200, 500, 1000) according to the Peak Over Threshold approach.\n                ",
+            "map": {
+                "colormap": {
+                    "min_index": 1,
+                    "min_value": 0.0,
+                    "max_index": 255,
+                    "max_value": 5.0,
+                    "name": "flare",
+                    "nodata_index": 0,
+                    "units": "meters"
+                },
+                "path": "strom_surge_level_{scenario}_{year}_map",
+                "bounds": [
+                    [
+                        -180.0,
+                        85.0
+                    ],
+                    [
+                        180.0,
+                        85.0
+                    ],
+                    [
+                        180.0,
+                        -85.0
+                    ],
+                    [
+                        -180.0,
+                        -85.0
+                    ]
+                ],
+                "index_values": null,
+                "source": "map_array_pyramid"
+            },
+            "scenarios": [
+                {
+                    "id": "historical",
+                    "years": [
+                        1969
+                    ]
+                },
+                {
+                    "id": "rcp45",
+                    "years": [
+                        2099
+                    ]
+                },
+                {
+                    "id": "rcp85",
+                    "years": [
+                        2099
+                    ]
+                }
+            ],
+            "units": "none"
+        },
+        {
+            "hazard_type": "Wind",
+            "group_id": "ecb",
+            "path": "windstorm/ecb/v2/gust_speed_level_{scenario}_{year}",
+            "indicator_id": "gust_speed_level",
+            "indicator_model_id": null,
+            "indicator_model_gcm": "historical",
+            "params": {},
+            "display_name": "Wind Gust Speed Level",
+            "display_groups": [],
+            "description": "\n                ECB Gumbel analysis.\n                ",
+            "map": {
+                "colormap": {
+                    "min_index": 1,
+                    "min_value": 0.0,
+                    "max_index": 255,
+                    "max_value": 85.0,
+                    "name": "flare",
+                    "nodata_index": 0,
+                    "units": "meters/second"
+                },
+                "path": "gust_speed_level_{scenario}_{year}_map",
+                "bounds": [
+                    [
+                        -180.0,
+                        85.0
+                    ],
+                    [
+                        180.0,
+                        85.0
+                    ],
+                    [
+                        180.0,
+                        -85.0
+                    ],
+                    [
+                        -180.0,
+                        -85.0
+                    ]
+                ],
+                "index_values": null,
+                "source": "map_array_pyramid"
+            },
+            "scenarios": [
+                {
+                    "id": "historical",
+                    "years": [
+                        1980
+                    ]
+                }
+            ],
+            "units": "none"
+        },
+        {
+            "hazard_type": "WaterStress",
+            "group_id": "wri",
+            "path": "waterstress/wri/v4/water_stress_{scenario}_{year}",
+            "indicator_id": "water_stress",
+            "indicator_model_id": null,
+            "indicator_model_gcm": "historical",
+            "params": {},
+            "display_name": "WRI Water Stress",
+            "display_groups": [],
+            "description": "\n                The Aqueduct Water Stress Projections Data include indicators of change in water supply, \n                water demand, water stress, and seasonal variability, projected for the coming decades \n                under scenarios of climate and economic growth.\n                ",
+            "map": {
+                "colormap": {
+                    "min_index": 1,
+                    "min_value": 0.0,
+                    "max_index": 255,
+                    "max_value": 7.0,
+                    "name": "flare",
+                    "nodata_index": 0,
+                    "units": "index"
+                },
+                "path": "water_stress_{scenario}_{year}_map",
+                "bounds": [
+                    [
+                        -180.0,
+                        90.0
+                    ],
+                    [
+                        180.0,
+                        90.0
+                    ],
+                    [
+                        180.0,
+                        -90.0
+                    ],
+                    [
+                        -180.0,
+                        -90.0
+                    ]
+                ],
+                "index_values": null,
+                "source": "map_array_pyramid"
+            },
+            "scenarios": [
+                {
+                    "id": "rcp26",
+                    "years": [
+                        2020,
+                        2030,
+                        2040
+                    ]
+                },
+                {
+                    "id": "rcp45",
+                    "years": [
+                        2020,
+                        2030,
+                        2040
+                    ]
+                },
+                {
+                    "id": "rcp85",
+                    "years": [
+                        2020,
+                        2030,
+                        2040
+                    ]
+                }
+            ],
+            "units": "none"
+        },
+        {
+            "hazard_type": "Landslide",
+            "group_id": "jrc",
+            "path": "landslide/jrc/v2/susceptability_{scenario}_{year}",
+            "indicator_id": "susceptability",
+            "indicator_model_id": null,
+            "indicator_model_gcm": "historical",
+            "params": {},
+            "display_name": "Landslide Susceptability",
+            "display_groups": [],
+            "description": "\n                The spatial dataset (GIS map) shows landslide susceptibility levels at European scale, \n                derived from heuristic-statistical modelling of main landslide conditioning factors \n                using also landslide location data. It covers all EU member states except Malta, in \n                addition to Albania, Andorra, Bosnia and Herzegovina, Croatia, FYR Macedonia, Iceland, \n                Kosovo, Liechtenstein, Montenegro, Norway, San Marino, Serbia, and Switzerland.\n                ",
+            "map": {
+                "colormap": {
+                    "min_index": 1,
+                    "min_value": 0.0,
+                    "max_index": 255,
+                    "max_value": 5.0,
+                    "name": "flare",
+                    "nodata_index": 0,
+                    "units": "index"
+                },
+                "path": "susceptability_{scenario}_{year}_map",
+                "bounds": [
+                    [
+                        -180.0,
+                        85.0
+                    ],
+                    [
+                        180.0,
+                        85.0
+                    ],
+                    [
+                        180.0,
+                        -85.0
+                    ],
+                    [
+                        -180.0,
+                        -85.0
+                    ]
+                ],
+                "index_values": null,
+                "source": "map_array_pyramid"
+            },
+            "scenarios": [
+                {
+                    "id": "historical",
+                    "years": [
+                        1980
+                    ]
+                }
+            ],
+            "units": "none"
+        },
+        {
+            "hazard_type": "Subsidence",
+            "group_id": "jrc",
+            "path": "subsidence/jrc/v2/susceptability_{scenario}_{year}",
+            "indicator_id": "subsidence",
+            "indicator_model_id": null,
+            "indicator_model_gcm": "historical",
+            "params": {},
+            "display_name": "Subsidence Susceptability",
+            "display_groups": [],
+            "description": "\n                A number of layers for soil properties have been created based on data from the European\n                Soil Database in combination with data from the Harmonized World Soil Database (HWSD) \n                and Soil-Terrain Database (SOTER). The available layers include: Total available water \n                content, Depth available to roots, Clay content, Silt content, Sand content, Organic \n                carbon, Bulk Density, Coarse fragments.\n                ",
+            "map": {
+                "colormap": {
+                    "min_index": 1,
+                    "min_value": 0.0,
+                    "max_index": 255,
+                    "max_value": 5.0,
+                    "name": "flare",
+                    "nodata_index": 0,
+                    "units": "index"
+                },
+                "path": "susceptability_{scenario}_{year}_map",
+                "bounds": [
+                    [
+                        -180.0,
+                        85.0
+                    ],
+                    [
+                        180.0,
+                        85.0
+                    ],
+                    [
+                        180.0,
+                        -85.0
+                    ],
+                    [
+                        -180.0,
+                        -85.0
+                    ]
+                ],
+                "index_values": null,
+                "source": "map_array_pyramid"
+            },
+            "scenarios": [
+                {
+                    "id": "historical",
+                    "years": [
+                        1980
+                    ]
+                }
+            ],
+            "units": "none"
+        },
+        {
+            "hazard_type": "RiverineInundation",
+            "group_id": "river_tudelft",
+            "path": "inundation_river_tudelft/ecb/v2/flood_depth_{scenario}_{year}",
+            "indicator_id": "flood_depth",
+            "indicator_model_id": null,
+            "indicator_model_gcm": "historical",
+            "params": {},
+            "display_name": "River Flood Depth (tudelft)",
+            "display_groups": [],
+            "description": "\n                GIS-compatible files containing data related to the probability of \n                river floods occurring in Europe under present and future climate. \n                Includes gridded (GeoTIFF) datasets of river flood extents (in two \n                variants, with or without flood protection) and water depths.\n                Additionally includes extreme river discharge estimates in ESRI \n                Shapefile format. Based upon CLMcom-CCLM4-8-17-EC-EARTH regional \n                climate simulation (EURO-CORDEX).\n                ",
+            "map": {
+                "colormap": {
+                    "min_index": 1,
+                    "min_value": 0.0,
+                    "max_index": 255,
+                    "max_value": 5.0,
+                    "name": "flare",
+                    "nodata_index": 0,
+                    "units": "meters"
+                },
+                "path": "flood_depth_{scenario}_{year}_map",
+                "bounds": [
+                    [
+                        -180.0,
+                        85.0
+                    ],
+                    [
+                        180.0,
+                        85.0
+                    ],
+                    [
+                        180.0,
+                        -85.0
+                    ],
+                    [
+                        -180.0,
+                        -85.0
+                    ]
+                ],
+                "index_values": null,
+                "source": "map_array_pyramid"
+            },
+            "scenarios": [
+                {
+                    "id": "historical",
+                    "years": [
+                        1971
+                    ]
+                },
+                {
+                    "id": "rcp45",
+                    "years": [
+                        2050,
+                        2070
+                    ]
+                },
+                {
+                    "id": "rcp85",
+                    "years": [
+                        2050,
+                        2070
+                    ]
+                }
+            ],
+            "units": "none"
+        },
+        {
+            "hazard_type": "CoastalInundation",
+            "group_id": "coastal_tudelft",
+            "path": "inundation_coastal_tudelft/ecb/v2/flood_depth_{scenario}_{year}",
+            "indicator_id": "flood_depth",
+            "indicator_model_id": null,
+            "indicator_model_gcm": "historical",
+            "params": {},
+            "display_name": "Coastal Flood Depth (tudelft)",
+            "display_groups": [],
+            "description": "\n                GIS-compatible files containing data related to the probability of \n                river floods occurring in Europe under present and future climate. \n                Includes gridded (GeoTIFF) datasets of river flood extents (in two \n                variants, with or without flood protection) and water depths.\n                Additionally includes extreme river discharge estimates in ESRI \n                Shapefile format. Based upon CLMcom-CCLM4-8-17-EC-EARTH regional \n                climate simulation (EURO-CORDEX).\n                ",
+            "map": {
+                "colormap": {
+                    "min_index": 1,
+                    "min_value": 0.0,
+                    "max_index": 255,
+                    "max_value": 5.0,
+                    "name": "flare",
+                    "nodata_index": 0,
+                    "units": "meters"
+                },
+                "path": "flood_depth_{scenario}_{year}_map",
+                "bounds": [
+                    [
+                        -180.0,
+                        85.0
+                    ],
+                    [
+                        180.0,
+                        85.0
+                    ],
+                    [
+                        180.0,
+                        -85.0
+                    ],
+                    [
+                        -180.0,
+                        -85.0
+                    ]
+                ],
+                "index_values": null,
+                "source": "map_array_pyramid"
+            },
+            "scenarios": [
+                {
+                    "id": "historical",
+                    "years": [
+                        1971
+                    ]
+                },
+                {
+                    "id": "rcp45",
+                    "years": [
+                        2050,
+                        2070
+                    ]
+                },
+                {
+                    "id": "rcp85",
+                    "years": [
+                        2050,
+                        2070
+                    ]
+                }
+            ],
+            "units": "none"
+        },
+        {
+            "hazard_type": "Fire",
+            "group_id": "ecb",
+            "path": "fire_tudelft/ecb/v3/fwi20_{scenario}_{year}",
+            "indicator_id": "fire",
+            "indicator_model_id": null,
+            "indicator_model_gcm": "historical",
+            "params": {},
+            "display_name": "Fire Probability",
+            "display_groups": [],
+            "description": "\n                NetCDF files containing daily probabilities of high forest fire danger in \n                Europe under present and projected future climates. Includes gridded (NetCDF) \n                datasets of high forest fire danger probabilities for the present climate \n                (1981-2010) based on the ERA-Interim reanalysis and for the projected \n                climates under the RCP4.5 and RCP8.5 scenarios (periods 1971-2000, 2021-2050 \n                and 2071-2100). \n                ",
+            "map": {
+                "colormap": {
+                    "min_index": 1,
+                    "min_value": 0.0,
+                    "max_index": 255,
+                    "max_value": 100.0,
+                    "name": "flare",
+                    "nodata_index": 0,
+                    "units": "prob (%)"
+                },
+                "path": "fwi20_{scenario}_{year}_map",
+                "bounds": [
+                    [
+                        -45.0,
+                        73.0
+                    ],
+                    [
+                        65.5,
+                        73.0
+                    ],
+                    [
+                        65.5,
+                        21.5                    
+					],
+                    [
+                        -45.0,
+                        -21.5
+                    ]
+                ],
+                "index_values": null,
+                "source": "map_array_pyramid"
+            },
+            "scenarios": [
+                {
+                    "id": "historical",
+                    "years": [
+                        1971
+                    ]
+                },
+                {
+                    "id": "rcp45",
+                    "years": [
+                        2050,
+                        2100
+                    ]
+                },
+                {
+                    "id": "rcp85",
+                    "years": [
+                        2050,
+                        2100
+                    ]
+                }
+            ],
+            "units": "none"
+        },
+        {
+            "hazard_type": "Fire",
+            "group_id": "cds",
+            "path": "fire_cds/ecb/v4/sfwi_{scenario}_{year}",
+            "indicator_id": "Seasonal FWI",
+            "indicator_model_id": null,
+            "indicator_model_gcm": "CNRM-CERFACS-CNRM-CM5",
+            "params": {},
+            "display_name": "Seasonal Fire Weather Index (FWI) Categories",
+            "display_groups": [],
+            "description": "\n                The dataset presents projections of fire danger indicators for Europe based upon the Canadian \n                Fire Weather Index System (FWI) under future climate conditions. The FWI is a meteorologically \n                based index used worldwide to estimate the fire danger and is implemented in the Global ECMWF \n                Fire Forecasting model (GEFF). In this dataset, daily FWI values, seasonal FWI values, and other\n                FWI derived, threshold-specific, indicators were modelled using the GEFF model to estimate the\n                fire danger in future climate scenarios. These indicators include the number of days with moderate, \n                high, or very high fire danger conditions as classified by the European Forest Fire Information System \n                (EFFIS) during the northern hemisphere's fire season (June-September):\n                    very low: <5.2\n                    low: 5.2 - 11.2\n                    moderate: 11.2 - 21.3\n                    high: 21.3 - 38.0\n                    very high: 38.0 - 50\n                    extreme: >=50.0\n                ",
+            "map": {
+                "colormap": {
+                    "min_index": 1,
+                    "min_value": 0.0,
+                    "max_index": 255,
+                    "max_value": 6.0,
+                    "name": "flare",
+                    "nodata_index": 0,
+                    "units": "prob"
+                },
+                "path": "sfwi_{scenario}_{year}_map",
+                "bounds": [
+                    [
+                        -180.0,
+                        85.0
+                    ],
+                    [
+                        180.0,
+                        85.0
+                    ],
+                    [
+                        180.0,
+                        -85.0
+                    ],
+                    [
+                        -180.0,
+                        -85.0
+                    ]
+                ],
+                "index_values": null,
+                "source": "map_array_pyramid"
+            },
+            "scenarios": [
+                {
+                    "id": "historical",
+                    "years": [
+                        2004
+                    ]
+                },
+                {
+                    "id": "rcp45",
+                    "years": [
+                        2075,
+                        2080,
+                        2098
+                    ]
+                },
+                {
+                    "id": "rcp85",
+                    "years": [
+                        2075,
+                        2080,
+                        2098
+                    ]
+                }
+            ],
+            "units": "none"
+        }
+    ]
+}

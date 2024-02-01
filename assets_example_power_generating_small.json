@@ -1,0 +1,74 @@
+{
+    "items": [
+        {
+            "asset_class": "PowerGeneratingAsset",
+            "type": "Hydro",
+            "location": "Europe",
+            "latitude": 41.2117,
+            "longitude": -6.6856
+        },
+        {
+            "asset_class": "PowerGeneratingAsset",
+            "type": "Solar",
+            "location": "Europe",
+            "latitude": 39.83,
+            "longitude": -5.66
+        },
+        {
+            "asset_class": "PowerGeneratingAsset",
+            "type": "Hydro",
+            "location": "Europe",
+            "latitude": 39.25,
+            "longitude": -0.7667
+        },
+        {
+            "asset_class": "PowerGeneratingAsset",
+            "type": "Hydro",
+            "location": "Europe",
+            "latitude": 41.9763,
+            "longitude": 0.6116
+        },
+        {
+            "asset_class": "PowerGeneratingAsset",
+            "type": "Hydro",
+            "location": "Europe",
+            "latitude": 42.2917,
+            "longitude": -8.1136
+        },
+        {
+            "asset_class": "PowerGeneratingAsset",
+            "type": "Hydro",
+            "location": "Europe",
+            "latitude": 41.5756,
+            "longitude": -6.1891
+        },
+        {
+            "asset_class": "PowerGeneratingAsset",
+            "type": "Nuclear",
+            "location": "Europe",
+            "latitude": 39.807,
+            "longitude": -5.6986
+        },
+        {
+            "asset_class": "PowerGeneratingAsset",
+            "type": "Gas",
+            "location": "Europe",
+            "latitude": 36.7334,
+            "longitude": -3.5413
+        },
+        {
+            "asset_class": "PowerGeneratingAsset",
+            "type": "Gas",
+            "location": "Europe",
+            "latitude": 41.2977,
+            "longitude": -0.3376
+        },
+        {
+            "asset_class": "PowerGeneratingAsset",
+            "type": "Gas",
+            "location": "Europe",
+            "latitude": 43.3161,
+            "longitude": -5.8777
+        }
+    ]
+}
