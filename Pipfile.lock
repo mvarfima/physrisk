@@ -865,8 +865,8 @@
                 "sha256:f99d206db1f1ae735a8192ab93bd6028f3a42f6fa08467d37a14eb96c9dd34a3"
             ],
             "index": "pypi",
-            "markers": "python_version < '3.11' and python_version >= '3.7'",
-            "version": "==1.7.3"
+            "markers": "python_version >= '3.7'",
+            "version": "==1.9"
         },
         "setuptools": {
             "hashes": [
