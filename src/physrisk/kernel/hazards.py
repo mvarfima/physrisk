@@ -79,7 +79,7 @@ class RiverineInundation(Inundation):
 
 
 class Wind(Hazard):
-    kind = HazardKind.acute
+    kind = HazardKind.chronic
     pass
 
 

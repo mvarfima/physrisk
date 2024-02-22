@@ -120,7 +120,7 @@ class CoreInventorySourcePaths(InventorySourcePaths):
         self.add_selector(ChronicHeat, "mean/degree/days/above/32c", self._select_chronic_heat)
         self.add_selector(RiverineInundation, "flood_depth", self._select_riverine_inundation)
         self.add_selector(CoastalInundation, "flood_depth", self._select_coastal_inundation)
-        self.add_selector(Wind, "max_speed", self._select_wind)
+        self.add_selector(Wind, "wind25", self._select_wind)
 
     def resources_with(self, *, hazard_type: type, indicator_id: str):
         return ResourceSubset(self._inventory.resources_by_type_id[(hazard_type.__name__, indicator_id)])
@@ -136,9 +136,9 @@ class CoreInventorySourcePaths(InventorySourcePaths):
         candidates: ResourceSubset, scenario: str, year: int, hint: Optional[HazardDataHint] = None
     ):
         return (
-            candidates.with_model_id("nosub").first()
+            candidates.with_group_id("coastal_tudelft").first()
             if scenario == "historical"
-            else candidates.with_model_id("wtsub/95").first()
+            else candidates.with_group_id("coastal_tudelft").first()
         )
 
     @staticmethod
@@ -146,14 +146,14 @@ class CoreInventorySourcePaths(InventorySourcePaths):
         candidates: ResourceSubset, scenario: str, year: int, hint: Optional[HazardDataHint] = None
     ):
         return (
-            candidates.with_model_gcm("historical").first()
+            candidates.with_group_id("river_tudelft").first()
             if scenario == "historical"
-            else candidates.with_model_gcm("MIROC-ESM-CHEM").first()
+            else candidates.with_group_id("river_tudelft").first()
         )
 
     @staticmethod
     def _select_wind(candidates: ResourceSubset, scenario: str, year: int, hint: Optional[HazardDataHint] = None):
-        return candidates.prefer_group_id("iris_osc").first()
+        return candidates.with_group_id("wind_tudelft").first()
 
 
 def cmip6_scenario_to_rcp(scenario: str):
@@ -172,7 +172,7 @@ def cmip6_scenario_to_rcp(scenario: str):
     elif scenario == "ssp585":
         return "rcp8p5"
     else:
-        if scenario not in ["rcp2p6", "rcp4p5", "rcp6p0", "rcp8p5", "historical"]:
+        if scenario not in ["rcp2p6", "rcp4p5", "rcp6p0", "rcp8p5", "historical", "rcp26", "rcp45", "rcp60", "rcp85"]:
             raise ValueError(f"unexpected scenario {scenario}")
         return scenario
 
