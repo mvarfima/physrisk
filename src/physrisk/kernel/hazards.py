@@ -79,6 +79,21 @@ class RiverineInundation(Inundation):
 
 
 class Wind(Hazard):
+    kind = HazardKind.acute
+    pass
+
+
+class WaterStress(Hazard):
+    kind = HazardKind.chronic
+    pass
+
+
+class Landslide(Hazard):
+    kind = HazardKind.chronic
+    pass
+
+
+class Subsidence(Hazard):
     kind = HazardKind.chronic
     pass
 

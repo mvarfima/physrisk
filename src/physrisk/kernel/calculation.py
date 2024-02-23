@@ -24,6 +24,10 @@ from physrisk.vulnerability_models.thermal_power_generation_models_ECB import (
     ThermalPowerGenerationCoastalInundationModel,
     ThermalPowerGenerationRiverineInundationModel,
     SevereConvectiveWindstormModel,
+    HighFireModel,
+    WaterstressModel,
+    LandslideModel,
+    SubsidenceModel,
 )
 
 
@@ -52,6 +56,10 @@ def get_default_vulnerability_models() -> Dict[type, Sequence[VulnerabilityModel
             ThermalPowerGenerationCoastalInundationModel(),
             ThermalPowerGenerationRiverineInundationModel(),
             SevereConvectiveWindstormModel(),
+            HighFireModel(),
+            WaterstressModel(),
+            LandslideModel(),
+            SubsidenceModel(),
         ],
         TestAsset: [pgam.TemperatureModel()],
     }

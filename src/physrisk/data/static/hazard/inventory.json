@@ -135,7 +135,7 @@
             "units": "none"
         },
         {
-            "hazard_type": "Wind",
+            "hazard_type": "ChronicWind",
             "group_id": "wind_tudelft",
             "path": "wind/wind_tudelft/v1/wind25_{scenario}_{year}",
             "indicator_id": "wind25",
@@ -202,7 +202,7 @@
             "units": "none"
         },
         {
-            "hazard_type": "Wind",
+            "hazard_type": "ChronicWind",
             "group_id": "wind_tudelft",
             "path": "wind/wind_tudelft/v1/wind32_{scenario}_{year}",
             "indicator_id": "wind32",
@@ -272,7 +272,7 @@
             "hazard_type": "Fire",
             "group_id": "fire_tudelft",
             "path": "fire/fire_tudelft/v1/fwi20_{scenario}_{year}",
-            "indicator_id": "fwi",
+            "indicator_id": "fwi20",
             "indicator_model_id": null,
             "indicator_model_gcm": "historical",
             "params": {},
@@ -339,7 +339,7 @@
             "hazard_type": "Fire",
             "group_id": "fire_tudelft",
             "path": "fire/fire_tudelft/v1/fwi45_{scenario}_{year}",
-            "indicator_id": "fwi",
+            "indicator_id": "fwi45",
             "indicator_model_id": null,
             "indicator_model_gcm": "historical",
             "params": {},
@@ -403,7 +403,7 @@
             "units": "none"
         },
         {
-            "hazard_type": "Drought",
+            "hazard_type": "WaterStress",
             "group_id": "waterstress_wri",
             "path": "drought/waterstress_wri/v1/water_stress_{scenario}_{year}",
             "indicator_id": "water_stress",
@@ -474,7 +474,7 @@
             "units": "none"
         },
         {
-            "hazard_type": "Drought",
+            "hazard_type": "Landslide",
             "group_id": "landslide_jrc",
             "path": "drought/landslide_jrc/v1/susceptability_{scenario}_{year}",
             "indicator_id": "susceptability",
@@ -527,7 +527,7 @@
             "units": "none"
         },
         {
-            "hazard_type": "Drought",
+            "hazard_type": "Subsidence",
             "group_id": "subsidence_jrc",
             "path": "drought/subsidence_jrc/v1/susceptability_{scenario}_{year}",
             "indicator_id": "susceptability",

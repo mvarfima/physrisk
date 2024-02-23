@@ -4,7 +4,7 @@ from physrisk.api.v1.hazard_data import HazardResource
 from physrisk.data.hazard_data_provider import HazardDataHint, SourcePath
 from physrisk.data.inventory import EmbeddedInventory, Inventory
 from physrisk.kernel import hazards
-from physrisk.kernel.hazards import ChronicHeat, CoastalInundation, RiverineInundation, Wind
+from physrisk.kernel.hazards import ChronicHeat, CoastalInundation, RiverineInundation, ChronicWind, Fire, WaterStress, Landslide, Subsidence
 
 
 class ResourceSubset:
@@ -120,7 +120,11 @@ class CoreInventorySourcePaths(InventorySourcePaths):
         self.add_selector(ChronicHeat, "mean/degree/days/above/32c", self._select_chronic_heat)
         self.add_selector(RiverineInundation, "flood_depth", self._select_riverine_inundation)
         self.add_selector(CoastalInundation, "flood_depth", self._select_coastal_inundation)
-        self.add_selector(Wind, "wind25", self._select_wind)
+        self.add_selector(ChronicWind, "wind25", self._select_wind)
+        self.add_selector(Fire, "fwi20", self._select_fire)
+        self.add_selector(WaterStress, "water_stress", self._select_water_stress)
+        self.add_selector(Landslide, "susceptability", self._select_landslide)
+        self.add_selector(Subsidence, "susceptability", self._select_subsidence)
 
     def resources_with(self, *, hazard_type: type, indicator_id: str):
         return ResourceSubset(self._inventory.resources_by_type_id[(hazard_type.__name__, indicator_id)])
@@ -154,6 +158,22 @@ class CoreInventorySourcePaths(InventorySourcePaths):
     @staticmethod
     def _select_wind(candidates: ResourceSubset, scenario: str, year: int, hint: Optional[HazardDataHint] = None):
         return candidates.with_group_id("wind_tudelft").first()
+    
+    @staticmethod
+    def _select_fire(candidates: ResourceSubset, scenario: str, year: int, hint: Optional[HazardDataHint] = None):
+        return candidates.with_group_id("fire_tudelft").first()
+    
+    @staticmethod
+    def _select_water_stress(candidates: ResourceSubset, scenario: str, year: int, hint: Optional[HazardDataHint] = None):
+        return candidates.with_group_id("waterstress_wri").first()
+    
+    @staticmethod
+    def _select_landslide(candidates: ResourceSubset, scenario: str, year: int, hint: Optional[HazardDataHint] = None):
+        return candidates.with_group_id("landslide_jrc").first()
+    
+    @staticmethod
+    def _select_subsidence(candidates: ResourceSubset, scenario: str, year: int, hint: Optional[HazardDataHint] = None):
+        return candidates.with_group_id("subsidence_jrc").first()
 
 
 def cmip6_scenario_to_rcp(scenario: str):
