@@ -37,6 +37,7 @@ class AssetImpactRequest(BaseModel):
 
 
 class Category(int, Enum):
+    NORISK = 0
     NODATA = 0
     LOW = 1
     MEDIUM = 2

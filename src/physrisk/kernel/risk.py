@@ -150,7 +150,7 @@ class AssetLevelRiskModel(RiskModel):
             measure_ids_for_hazard[hazard_type] = measure_ids
         return measure_ids_for_hazard, measure_id_lookup
 
-    def calculate_risk_measures(self, assets: Sequence[Asset], prosp_scens: Sequence[str], years: Sequence[int]):
+    def calculate_risk_measures(self, assets: Sequence[Asset], hazard_types, prosp_scens: Sequence[str], years: Sequence[int]):
         impacts = self._calculate_all_impacts(assets, prosp_scens, years, include_histo=True)
         measures: Dict[MeasureKey, Measure] = {}
 
@@ -160,16 +160,26 @@ class AssetLevelRiskModel(RiskModel):
             measure_calc = self._measure_calculators[type(asset)]
             for prosp_scen in prosp_scens:
                 for year in years:
-                    for hazard_type in measure_calc.supported_hazards():
-                        base_impact = impacts.get(
-                            ImpactKey(asset=asset, hazard_type=hazard_type, scenario="historical", key_year=None)
-                        ).impact
-                        prosp_impact = impacts.get(
-                            ImpactKey(asset=asset, hazard_type=hazard_type, scenario=prosp_scen, key_year=year)
-                        ).impact
-                        if not isinstance(base_impact, EmptyImpactDistrib) and not isinstance(
-                            prosp_impact, EmptyImpactDistrib
-                        ):
-                            risk_ind = measure_calc.calc_measure(hazard_type, base_impact, prosp_impact)
-                            measures[MeasureKey(asset, prosp_scen, year, hazard_type)] = risk_ind
+                    # for hazard_type in measure_calc.supported_hazards():
+                    for hazard_type in hazard_types:
+                        old=False
+                        if old:
+                            base_impact = impacts.get(
+                                ImpactKey(asset=asset, hazard_type=hazard_type, scenario="historical", key_year=None)
+                            ).impact
+                            prosp_impact = impacts.get(
+                                ImpactKey(asset=asset, hazard_type=hazard_type, scenario=prosp_scen, key_year=year)
+                            ).impact
+                            if not isinstance(base_impact, EmptyImpactDistrib) and not isinstance(
+                                prosp_impact, EmptyImpactDistrib
+                            ):
+                                risk_ind = measure_calc.calc_measure(hazard_type, base_impact, prosp_impact)
+                                measures[MeasureKey(asset, prosp_scen, year, hazard_type)] = risk_ind
+                        else:
+                            prosp_impact = impacts.get(
+                                ImpactKey(asset=asset, hazard_type=hazard_type, scenario=prosp_scen, key_year=year)
+                            ).impact
+                            if not isinstance(prosp_impact, EmptyImpactDistrib):
+                                risk_ind = measure_calc.calc_measure(hazard_type, prosp_scen, year, prosp_impact)
+                                measures[MeasureKey(asset, prosp_scen, year, hazard_type)] = risk_ind
         return impacts, measures
