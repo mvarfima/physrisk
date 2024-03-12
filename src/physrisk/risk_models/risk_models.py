@@ -272,9 +272,9 @@ class ThermalPowerPlantsRiskMeasures(RiskMeasureCalculator):
             values=self._definition_values(self._ECB_description),
             underlying_measures=[
                 RiskMeasureDefinition(
-                    measure_id="measures_1",
-                    label="Expected cooling annual energy consumption (kWh).",
-                    description="Expected cooling annual energy consumption (kWh).",
+                    measure_id="measures_0",
+                    label="Exposure to hazard.",
+                    description="Score",
                 )
             ],
         )
@@ -284,30 +284,28 @@ class ThermalPowerPlantsRiskMeasures(RiskMeasureCalculator):
     def _definition_values(self, description: Callable[[Category], str]):
         return [
             RiskScoreValue(
-                value=Category.REDFLAG,
-                label=(
-                    "The asset is very significantly impacted and the impact will increase "
-                    "as a result of climate change."
-                ),
-                description=description(Category.REDFLAG),
-            ),
-            RiskScoreValue(
                 value=Category.HIGH,
-                label="The asset is materially impacted and the impact will increase as a result of climate change.",
+                label=(
+                    "Exposure to hazard is high"
+                ),
                 description=description(Category.HIGH),
             ),
             RiskScoreValue(
                 value=Category.MEDIUM,
-                label=(
-                    "The asset is materially impacted but the impact will not significantly increase "
-                    "as a result of climate change."
-                ),
+                label="Exposure to hazard is medium",
                 description=description(Category.MEDIUM),
             ),
             RiskScoreValue(
                 value=Category.LOW,
-                label="No material impact.",
+                label=(
+                    "Exposure to hazard is low"
+                ),
                 description=description(Category.LOW),
+            ),
+            RiskScoreValue(
+                value=Category.NORISK,
+                label="No risk",
+                description=description(Category.NORISK),
             ),
             RiskScoreValue(value=Category.NODATA, label="No data.", description="No data."),
         ]
